@@ -1,0 +1,1246 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Уильям Шекспир · Литературный портал</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #e9e0d0;
+    --paper: #f6f0e5;
+    --ink: #3a3228;
+    --ink-soft: #6b5f50;
+    --muted: #8a7c6b;
+    --line: #d6c8b3;
+    --gold: #a88a5c;
+    --gold-dark: #7d623a;
+    --terracotta: #b06a4e;
+    --shadow: 0 22px 40px -28px rgba(58,50,40,.55);
+    --radius: 20px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    font-family:"EB Garamond", Georgia, serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 600px at 8% -6%, #f7efe2 0%, transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, #e9dcc4 0%, transparent 50%),
+      var(--bg);
+    line-height:1.65;
+    font-size:18px;
+  }
+
+  ::selection{ background:#d9c6a5; color:#2f2820; }
+
+  /* ---------- ЗАСТАВКА (ЧЁРНЫЙ ЭКРАН) ---------- */
+  #splash{
+    position:fixed; inset:0; z-index:9999;
+    background:#0a0908;
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    color:#e8dcc8;
+    cursor:pointer;
+    transition:opacity 1s ease, visibility 1s ease;
+    text-align:center;
+    padding:30px;
+  }
+  #splash.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+
+  .splash-ornament{
+    font-family:"Cormorant Garamond", serif;
+    font-size:34px;
+    color:#b89a6a;
+    letter-spacing:.4em;
+    margin-bottom:18px;
+    opacity:.85;
+  }
+
+  .splash-title{
+    font-family:"Cormorant Garamond", serif;
+    font-size:clamp(40px, 8vw, 90px);
+    font-weight:600;
+    line-height:1.05;
+    color:#f2e8d6;
+    margin:0 0 12px;
+    letter-spacing:-.02em;
+    text-shadow:0 0 40px rgba(200,170,120,.25);
+  }
+
+  .splash-title em{
+    font-style:italic;
+    font-weight:400;
+    color:#c9a96e;
+  }
+
+  .splash-sub{
+    font-family:"EB Garamond", serif;
+    font-size:clamp(14px, 2vw, 19px);
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:#9a8a72;
+    margin:0 0 30px;
+  }
+
+  .splash-rule{
+    width:120px; height:1px;
+    background:linear-gradient(90deg, transparent, #b89a6a, transparent);
+    margin:0 auto 26px;
+  }
+
+  .splash-hint{
+    font-family:"EB Garamond", serif;
+    font-size:13px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#6b5f4e;
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse{
+    0%,100%{ opacity:.5; }
+    50%{ opacity:1; }
+  }
+
+  /* вензеля по углам */
+  #splash::before,
+  #splash::after{
+    content:"";
+    position:absolute;
+    width:110px; height:110px;
+    border:1px solid rgba(184,154,106,.28);
+    pointer-events:none;
+  }
+  #splash::before{
+    top:26px; left:26px;
+    border-right:0; border-bottom:0;
+    border-top-left-radius:22px;
+  }
+  #splash::after{
+    bottom:26px; right:26px;
+    border-left:0; border-top:0;
+    border-bottom-right-radius:22px;
+  }
+
+  .splash-corner{
+    position:absolute;
+    width:110px; height:110px;
+    border:1px solid rgba(184,154,106,.28);
+    pointer-events:none;
+  }
+  .splash-corner.tr{ top:26px; right:26px; border-left:0; border-bottom:0; border-top-right-radius:22px; }
+  .splash-corner.bl{ bottom:26px; left:26px; border-right:0; border-top:0; border-bottom-left-radius:22px; }
+
+  /* ---------- ОБЩИЕ ---------- */
+  .wrap{ width:100%; max-width:1100px; margin:0 auto; padding:0 22px; }
+
+  h1,h2,h3,h4{
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-weight:600;
+    line-height:1.15;
+    margin:0;
+    letter-spacing:-.3px;
+  }
+
+  p{ margin:0 0 1em; }
+
+  a{ color:var(--gold-dark); text-decoration:none; border-bottom:1px dotted var(--gold); transition:color .2s, border-color .2s; }
+  a:hover{ color:var(--terracotta); border-color:var(--terracotta); }
+
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:.26em;
+    text-transform:uppercase;
+    color:var(--gold-dark);
+    background:#f3ead9;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 16px;
+    margin-bottom:18px;
+  }
+
+  .section{ padding:74px 0 10px; scroll-margin-top:80px; }
+  .section-head{ margin-bottom:34px; max-width:760px; }
+  .section-head h2{ font-size:clamp(30px,4vw,44px); margin-bottom:10px; }
+  .section-head p{ color:var(--ink-soft); font-size:18px; }
+
+  /* ---------- НАВИГАЦИЯ ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(233,224,208,.82);
+    border-bottom:1px solid rgba(214,200,179,.7);
+  }
+  .topbar-inner{
+    max-width:1100px; margin:0 auto; padding:12px 22px;
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .brand{
+    font-family:"Cormorant Garamond", serif;
+    font-size:21px; font-weight:700; letter-spacing:.04em;
+    color:var(--ink); border:0; white-space:nowrap;
+  }
+  .brand span{ color:var(--terracotta); }
+  .nav{ display:flex; gap:4px; flex-wrap:wrap; margin-left:auto; }
+  .nav a{
+    border:0; font-size:14.5px; letter-spacing:.02em; color:var(--ink-soft);
+    padding:7px 11px; border-radius:10px; transition:background .2s, color .2s;
+  }
+  .nav a:hover{ background:#f2e9d9; color:var(--ink); }
+
+  /* ---------- ЗАСТАВКА САЙТА ---------- */
+  .hero{
+    position:relative; overflow:hidden;
+    padding:70px 0 50px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.15fr .85fr; gap:46px; align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(44px,7vw,82px);
+    line-height:.98; margin-bottom:10px;
+  }
+  .hero h1 em{
+    font-style:italic; font-weight:400; color:var(--terracotta);
+  }
+  .hero-sub{
+    font-family:"Cormorant Garamond", serif;
+    font-size:clamp(20px,2.4vw,26px);
+    font-style:italic; color:var(--gold-dark);
+    margin:10px 0 22px;
+  }
+  .hero-lead{ color:var(--ink-soft); font-size:19px; max-width:560px; margin-bottom:28px; }
+
+  .hero-actions{ display:flex; gap:12px; flex-wrap:wrap; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:"EB Garamond", serif; font-size:17px;
+    padding:13px 26px; border-radius:13px; border:1px solid transparent;
+    cursor:pointer; text-decoration:none; border-bottom:0;
+    transition:transform .2s, box-shadow .25s, background .25s, color .25s, border-color .25s;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+    color:#fff; box-shadow:0 16px 26px -18px rgba(125,98,58,.9);
+  }
+  .btn-primary:hover{ transform:translateY(-3px); box-shadow:0 22px 32px -18px rgba(125,98,58,1); color:#fff; }
+  .btn-ghost{
+    background:#fbf6ec; color:var(--gold-dark); border-color:var(--line);
+  }
+  .btn-ghost:hover{ background:#f3e9d7; border-color:var(--gold); transform:translateY(-2px); color:var(--gold-dark); }
+
+  .hero-figure{
+    position:relative;
+    border-radius:26px;
+    overflow:hidden;
+    background:#d8c7ab;
+    box-shadow:var(--shadow);
+    border:1px solid #cbb794;
+    aspect-ratio:4/5;
+    max-height:580px;
+  }
+  .hero-figure img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:sepia(.18) saturate(.85) contrast(.98);
+  }
+  .hero-figure::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, transparent 40%, rgba(58,50,40,.42));
+  }
+  .hero-figure figcaption{
+    position:absolute; left:18px; right:18px; bottom:16px; z-index:2;
+    color:#fdf8ef; font-size:13px; line-height:1.4; letter-spacing:.02em;
+    text-shadow:0 1px 4px rgba(0,0,0,.4);
+  }
+
+  .hero-quote{
+    margin-top:46px; padding:22px 26px;
+    border-left:4px solid var(--gold);
+    background:rgba(251,246,236,.7);
+    border-radius:0 14px 14px 0;
+    font-family:"Cormorant Garamond", serif;
+    font-size:22px; font-style:italic; color:var(--ink-soft);
+    max-width:720px;
+  }
+  .hero-quote span{ display:block; margin-top:8px; font-size:14px; font-style:normal; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-dark); font-family:"EB Garamond", serif; }
+
+  /* ---------- БИОГРАФИЯ ---------- */
+  .bio-grid{
+    display:grid; grid-template-columns:1.2fr .8fr; gap:38px; align-items:start;
+  }
+  .bio-text p{ font-size:18px; color:var(--ink-soft); }
+  .bio-text strong{ color:var(--ink); }
+
+  .bio-facts{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:24px 26px; box-shadow:var(--shadow);
+  }
+  .bio-facts h4{
+    font-size:15px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--gold-dark); margin-bottom:16px;
+  }
+  .fact{ display:flex; gap:14px; padding:11px 0; border-bottom:1px dashed var(--line); font-size:16px; }
+  .fact:last-child{ border-bottom:0; }
+  .fact b{ flex:0 0 92px; font-weight:600; color:var(--gold-dark); font-size:14px; letter-spacing:.04em; text-transform:uppercase; }
+  .fact span{ color:var(--ink-soft); }
+
+  /* ---------- ЛЕГЕНДЫ ---------- */
+  .legends-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+  }
+  .legend-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:26px 24px; box-shadow:var(--shadow);
+    transition:transform .25s, border-color .25s, box-shadow .25s;
+    position:relative;
+  }
+  .legend-card:hover{ transform:translateY(-6px); border-color:var(--gold); box-shadow:0 28px 44px -30px rgba(58,50,40,.6); }
+  .legend-card .num{
+    font-family:"Cormorant Garamond", serif; font-size:34px; font-weight:700;
+    color:var(--line); line-height:1; margin-bottom:10px;
+  }
+  .legend-card h4{ font-size:21px; margin-bottom:9px; }
+  .legend-card p{ font-size:16px; color:var(--ink-soft); margin-bottom:0; }
+
+  /* ---------- ПЬЕСЫ ---------- */
+  .filter-bar{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+  .filter-btn{
+    font-family:"EB Garamond", serif; font-size:15px;
+    border:1px solid var(--line); background:#f7f1e6; color:var(--ink-soft);
+    padding:9px 18px; border-radius:999px; cursor:pointer;
+    transition:background .2s, color .2s, border-color .2s, transform .2s;
+  }
+  .filter-btn:hover{ background:#efe4d2; color:var(--ink); transform:translateY(-1px); }
+  .filter-btn.active{ background:var(--gold-dark); color:#fff; border-color:var(--gold-dark); }
+
+  .plays-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+  }
+  .play-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:16px;
+    padding:20px 20px 18px; box-shadow:var(--shadow);
+    transition:transform .22s, border-color .22s, box-shadow .22s;
+    display:flex; flex-direction:column;
+    text-decoration:none; color:inherit; border-bottom:0;
+  }
+  .play-card:hover{ transform:translateY(-5px); border-color:var(--gold); box-shadow:0 24px 38px -28px rgba(58,50,40,.6); }
+  .play-card .tag{
+    align-self:flex-start; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--gold-dark); background:#f3ead9; border:1px solid var(--line);
+    border-radius:999px; padding:4px 10px; margin-bottom:10px;
+  }
+  .play-card h4{ font-size:21px; margin-bottom:6px; }
+  .play-card .translator{
+    font-size:14px; color:var(--muted); margin-bottom:0; margin-top:auto;
+    padding-top:10px; border-top:1px dashed var(--line);
+  }
+  .play-card .translator b{ color:var(--gold-dark); font-weight:600; }
+
+  /* ---------- ОТНОШЕНИЕ ---------- */
+  .attitude-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  .attitude-panel{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px 28px 22px; box-shadow:var(--shadow);
+  }
+  .attitude-panel h3{
+    font-size:26px; margin-bottom:6px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .attitude-panel h3::after{ content:""; flex:1; height:1px; background:var(--line); }
+  .attitude-panel .who{
+    font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted);
+    margin-bottom:18px;
+  }
+  .quote-row{ padding:14px 0; border-bottom:1px dashed var(--line); }
+  .quote-row:last-child{ border-bottom:0; padding-bottom:0; }
+  .quote-row .author{ font-weight:600; color:var(--gold-dark); }
+  .quote-row .text{ font-style:italic; color:var(--ink-soft); font-size:16.5px; }
+  .quote-row.negative .author{ color:var(--terracotta); }
+
+  .quote-more{
+    margin-top:8px;
+    background:none; border:0; padding:0;
+    font-family:"EB Garamond", serif; font-size:14.5px;
+    color:var(--gold-dark); cursor:pointer; letter-spacing:.02em;
+    border-bottom:1px dotted var(--gold);
+    transition:color .2s, border-color .2s;
+  }
+  .quote-more:hover{ color:var(--terracotta); border-color:var(--terracotta); }
+  .quote-detail{
+    margin-top:12px; padding:14px 16px;
+    border-radius:12px;
+    background:#f3ead9; border:1px solid var(--line);
+    font-size:15.5px; color:var(--ink-soft); line-height:1.6;
+    animation:fadeIn .3s ease;
+  }
+  .quote-detail p{ margin:0 0 .7em; }
+  .quote-detail p:last-of-type{ margin-bottom:.6em; }
+  .quote-detail a{ font-size:14px; border-bottom:1px dotted var(--gold); }
+  @keyframes fadeIn{
+    from{ opacity:0; transform:translateY(-4px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ---------- ГАЛЕРЕЯ ---------- */
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
+  }
+  .gallery-item{
+    position:relative; overflow:hidden; border-radius:16px;
+    border:1px solid var(--line); background:#d8c7ab;
+    box-shadow:var(--shadow); aspect-ratio:3/4;
+  }
+  .gallery-item img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    filter:sepia(.2) saturate(.8);
+    transition:transform .5s ease, filter .4s ease;
+  }
+  .gallery-item:hover img{ transform:scale(1.06); filter:sepia(.05) saturate(1); }
+  .gallery-item figcaption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:26px 12px 10px; font-size:12.5px; line-height:1.35;
+    color:#fdf8ef; background:linear-gradient(transparent, rgba(45,38,28,.78));
+  }
+
+  /* ---------- НОВАЯ ВКЛАДКА: ТЕАТР ---------- */
+  .theatre-hero{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:34px 30px; box-shadow:var(--shadow); margin-bottom:26px;
+  }
+  .theatre-hero h3{ font-size:28px; margin-bottom:8px; }
+  .theatre-hero .sub{ color:var(--muted); font-size:15px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:18px; }
+
+  .theatre-facts{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:20px 0 0;
+  }
+  .t-fact{
+    background:#fbf5e9; border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; text-align:center;
+    transition:transform .2s, border-color .2s;
+  }
+  .t-fact:hover{ transform:translateY(-3px); border-color:var(--gold); }
+  .t-fact b{ display:block; font-size:28px; color:var(--gold-dark); line-height:1.1; }
+  .t-fact span{ font-size:13px; color:var(--ink-soft); }
+
+  .theatre-timeline{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:28px 30px; box-shadow:var(--shadow); margin-bottom:26px;
+  }
+  .timeline-item{
+    display:flex; gap:18px; padding:14px 0; border-bottom:1px dashed var(--line);
+  }
+  .timeline-item:last-child{ border-bottom:0; }
+  .timeline-item .year{
+    flex:0 0 92px; font-weight:600; color:var(--gold-dark); font-size:15px; letter-spacing:.04em;
+  }
+  .timeline-item .event{ color:var(--ink-soft); font-size:16.5px; }
+  .timeline-item .event strong{ color:var(--ink); }
+
+  .theatre-quotes{
+    display:grid; grid-template-columns:1fr 1fr; gap:16px;
+  }
+  .t-quote{
+    background:var(--paper); border:1px solid var(--line); border-left:4px solid var(--gold);
+    border-radius:0 14px 14px 0; padding:18px 22px;
+    font-family:"Cormorant Garamond", serif; font-style:italic; font-size:19px;
+    color:var(--ink-soft);
+  }
+  .t-quote span{ display:block; margin-top:8px; font-style:normal; font-family:"EB Garamond", serif; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-dark); }
+
+  /* ---------- НОВАЯ ВКЛАДКА: ТЕАТРЫ МИРА ---------- */
+  .world-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:18px;
+  }
+  .world-card{
+    background:var(--paper); border:1px solid var(--line); border-radius:16px;
+    padding:22px 22px 18px; box-shadow:var(--shadow);
+    transition:transform .22s, border-color .22s;
+    display:flex; flex-direction:column;
+  }
+  .world-card:hover{ transform:translateY(-4px); border-color:var(--gold); }
+  .world-card .city{
+    font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:6px;
+  }
+  .world-card h4{ font-size:22px; margin-bottom:6px; }
+  .world-card .desc{ font-size:15.5px; color:var(--ink-soft); margin-bottom:14px; }
+  .world-card .links{ margin-top:auto; display:flex; flex-direction:column; gap:6px; }
+  .world-card .links a{
+    font-size:14.5px; border-bottom:1px dotted var(--gold);
+    display:inline-block; width:fit-content;
+  }
+
+  /* ---------- ПОДВАЛ ---------- */
+  footer{
+    margin-top:70px; border-top:1px solid var(--line);
+    padding:30px 0 50px; color:var(--muted); font-size:14px;
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    max-width:1100px; margin-left:auto; margin-right:auto; padding-left:22px; padding-right:22px;
+  }
+
+  /* ---------- АДАПТИВ ---------- */
+  @media (max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; gap:32px; }
+    .hero-figure{ max-height:420px; aspect-ratio:16/10; }
+    .bio-grid{ grid-template-columns:1fr; }
+    .legends-grid{ grid-template-columns:1fr 1fr; }
+    .plays-grid{ grid-template-columns:1fr 1fr; }
+    .attitude-grid{ grid-template-columns:1fr; }
+    .gallery-grid{ grid-template-columns:1fr 1fr; }
+    .theatre-facts{ grid-template-columns:1fr 1fr; }
+    .theatre-quotes{ grid-template-columns:1fr; }
+    .world-grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width:560px){
+    body{ font-size:17px; }
+    .legends-grid, .plays-grid{ grid-template-columns:1fr; }
+    .gallery-grid{ grid-template-columns:1fr 1fr; }
+    .nav{ width:100%; margin-left:0; }
+    .hero{ padding-top:44px; }
+    .theatre-facts{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= ЗАСТАВКА (ЧЁРНЫЙ ЭКРАН) ================= -->
+<div id="splash" onclick="this.classList.add('hidden')">
+  <div class="splash-corner tr"></div>
+  <div class="splash-corner bl"></div>
+
+  <div class="splash-ornament">❧ ❦ ❧</div>
+  <h1 class="splash-title">Уильям<br><em>Шекспир</em></h1>
+  <p class="splash-sub">Бард из Стратфорда · 1564–1616</p>
+  <div class="splash-rule"></div>
+  <p class="splash-hint">Нажмите, чтобы войти</p>
+</div>
+
+<!-- ================= НАВИГАЦИЯ ================= -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="#top" class="brand">Уильям <span>Шекспир</span></a>
+    <nav class="nav">
+      <a href="#bio">Биография</a>
+      <a href="#legends">Легенды</a>
+      <a href="#plays">Пьесы</a>
+      <a href="#theatre">Театр</a>
+      <a href="#world-theatres">Театры мира</a>
+      <a href="#attitude">Отношение</a>
+      <a href="#gallery">Галерея</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ================= ЗАСТАВКА САЙТА ================= -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Литературный портал · Англия · XVI–XVII вв.</div>
+        <h1>Уильям<br><em>Шекспир</em></h1>
+        <div class="hero-sub">«Потрясающий копьём» · бард из Стратфорда</div>
+        <p class="hero-lead">
+          Самый загадочный драматург в истории мировой литературы. О нём
+          сохранилось мало достоверных фактов — и тем больше легенд,
+          догадок и восторженных (а порой и резких) суждений.
+          Здесь собраны его пьесы, переводчики, биография и то,
+          как к нему относились великие умы России и Запада.
+        </p>
+        <div class="hero-actions">
+          <a href="#plays" class="btn btn-primary">К пьесам →</a>
+          <a href="#theatre" class="btn btn-ghost">История театра</a>
+        </div>
+      </div>
+
+      <figure class="hero-figure">
+        <!-- ТВОЯ 1-Я КАРТИНКА (chandos.jpg) -->
+        <img
+          src="chandos.jpg"
+          alt="Портрет Уильяма Шекспира, так называемый портрет Чандоса"
+          loading="eager">
+        <figcaption>
+          «Портрет Чандоса» — одно из самых известных изображений Шекспира.
+          Национальная портретная галерея, Лондон.
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="hero-quote">
+      «Он был не человеком, а целым миром; он был гением, который
+      видел всё и умел всё выразить».
+      <span>Виктор Гюго · о Шекспире</span>
+    </div>
+  </div>
+</header>
+
+<!-- ================= БИОГРАФИЯ ================= -->
+<section class="section" id="bio">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Жизнь и время</div>
+      <h2>Биография: между документом и легендой</h2>
+      <p>Шекспир — это редкий случай, когда величие текстов намного превосходит объём достоверных сведений о жизни автора.</p>
+    </div>
+
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p>
+          Уильям Шекспир родился, по преданию, <strong>23 апреля 1564 года</strong>
+          в Стратфорде-на-Эйвоне — небольшом провинциальном городке в графстве
+          Уорикшир. Его отец, Джон Шекспир, был перчаточником и торговцем,
+          мать, Мэри Арден, происходила из уважаемой семьи. О детстве и
+          юности будущего драматурга известно на удивление мало — этот период
+          даже называют «потерянными годами».
+        </p>
+        <p>
+          В <strong>1582 году</strong> он женился на Энн Хэтэуэй, которая была
+          старше его на восемь лет. Вскоре родились дети — Сюзанна и близнецы
+          Хэмнет и Джудит. Около <strong>1587 года</strong> Шекспир уехал в
+          Лондон, где началась его театральная карьера: сначала он работал
+          рабочим сцены и переписчиком ролей, затем стал актёром и, наконец,
+          драматургом.
+        </p>
+        <p>
+          Он был совладельцем театра «Глобус» и пайщиком труппы «Слуги лорда-камергера»
+          (позже — «Слуги короля»). Его пьесы шли с огромным успехом, а
+          сонеты и поэмы принесли ему славу и в литературных кругах.
+          Умер Шекспир <strong>23 апреля 1616 года</strong> в Стратфорде
+          и был похоронен в церкви Святой Троицы.
+        </p>
+        <p>
+          При этом <strong>ни одной рукописи</strong>, <strong>ни одного
+          прижизненного портрета</strong> (в общепризнанном смысле) и
+          <strong>ни одного развёрнутого отзыва современников</strong> о нём
+          как о писателе не сохранилось. Именно эта пустота вокруг имени
+          и породила знаменитый «шекспировский вопрос».
+        </p>
+      </div>
+
+      <aside class="bio-facts">
+        <h4>Кратко · факты и даты</h4>
+        <div class="fact"><b>1564</b><span>Рождение в Стратфорде-на-Эйвоне, крещение 26 апреля.</span></div>
+        <div class="fact"><b>1582</b><span>Брак с Энн Хэтэуэй.</span></div>
+        <div class="fact"><b>1590-е</b><span>Начало лондонской театральной карьеры, первые пьесы.</span></div>
+        <div class="fact"><b>1599</b><span>Открытие театра «Глобус».</span></div>
+        <div class="fact"><b>1609</b><span>Публикация «Сонетов» (без ведома автора).</span></div>
+        <div class="fact"><b>1616</b><span>Смерть 23 апреля, погребение в церкви Св. Троицы.</span></div>
+        <div class="fact"><b>1623</b><span>Первое фолио — собрание пьес, гравюра Дройсхута.</span></div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЛЕГЕНДЫ ================= -->
+<section class="section" id="legends">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Тени и домыслы</div>
+      <h2>Легенды о Шекспире</h2>
+      <p>Вокруг его имени сложился целый мифологический круг: от браконьерства в молодости до спора о том, кто скрывался под маской «потрясающего копьём».</p>
+    </div>
+
+    <div class="legends-grid">
+      <article class="legend-card">
+        <div class="num">01</div>
+        <h4>«Потерянные годы»</h4>
+        <p>С 1585 по 1592 год о Шекспире нет почти никаких документов. Одни исследователи считают, что он учительствовал, другие — что служил в армии или даже плавал на корабле. Эта лакуна до сих пор питает самые смелые гипотезы.</p>
+      </article>
+
+      <article class="legend-card">
+        <div class="num">02</div>
+        <h4>Браконьерство в парке</h4>
+        <p>Одна из ранних легенд гласит, что молодой Шекспир был пойман на браконьерстве в заповеднике сэра Томаса Люси. Именно поэтому, якобы, ему пришлось бежать в Лондон. Документальных подтверждений этому нет, но легенда оказалась удивительно живучей.</p>
+      </article>
+
+      <article class="legend-card">
+        <div class="num">03</div>
+        <h4>«Шекспир — это не Шекспир»</h4>
+        <p>С конца XVIII века спорят: мог ли сын перчаточника из провинции написать «Гамлета» и «Короля Лира»? «Претендентами» называли Фрэнсиса Бэкона, графа Оксфорда, Кристофера Марло и даже саму королеву Елизавету. Научный мейнстрим отвергает эти версии, но легенда живёт.</p>
+      </article>
+
+      <article class="legend-card">
+        <div class="num">04</div>
+        <h4>Проклятие над могилой</h4>
+        <p>На надгробии Шекспира в Стратфорде высечены слова, предостерегающие от переноса его останков. Это породило легенду о «проклятии», которое падёт на того, кто потревожит его прах.</p>
+      </article>
+
+      <article class="legend-card">
+        <div class="num">05</div>
+        <h4>«Потрясающий копьём»</h4>
+        <p>Фамилия «Шекспир» буквально означает «потрясающий копьём». Это породило романтическую легенду о том, что он был воином или даже наёмником, прежде чем стать актёром и драматургом. Красивая, но не подтверждённая история.</p>
+      </article>
+
+      <article class="legend-card">
+        <div class="num">06</div>
+        <h4>Единственный прижизненный портрет</h4>
+        <p>В 2015 году ботаник и историк Марк Гриффитс заявил, что нашёл единственный прижизненный портрет Шекспира на титульном листе книги XVI века по ботанике. Открытие вызвало бурную дискуссию, но легенда о «неуловимом лице» только окрепла.</p>
+      </article>
+
+      <article class="legend-card">
+        <div class="num">07</div>
+        <h4>«А был ли Шекспир?.. Или это дворецкий?»</h4>
+        <p>Самая радикальная и самая шутливая версия: никакого Шекспира-драматурга не существовало, а пьесы написал его <em>дворецкий</em> (или слуга, или кто-то из окружения), пожелавший остаться в тени. Всерьёз эту идею никто из учёных не защищает — это пародия на «антистратфордианские» теории. Но в интернете она живёт как анекдот: «Шекспир был неграмотным, а всё написал его дворецкий».</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ПЬЕСЫ ================= -->
+<section class="section" id="plays">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Наследие · Переводы</div>
+      <h2>Пьесы и переводчики</h2>
+      <p>Шекспир писал трагедии, комедии, хроники и «проблемные пьесы». В России его читают и играют в переводах блистательных мастеров — от Михаила Лозинского до Бориса Пастернака. Нажмите на карточку, чтобы открыть текст пьесы.</p>
+    </div>
+
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-btn active" data-filter="all">Все</button>
+      <button class="filter-btn" data-filter="tragedy">Трагедии</button>
+      <button class="filter-btn" data-filter="comedy">Комедии</button>
+      <button class="filter-btn" data-filter="history">Хроники</button>
+      <button class="filter-btn" data-filter="poetry">Поэмы и сонеты</button>
+    </div>
+
+    <div class="plays-grid" id="plays-grid">
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Гамлет,_принц_Датский_(Шекспир)" target="_blank" rel="noopener" data-category="tragedy">
+        <span class="tag">Трагедия</span>
+        <h4>Гамлет, принц Датский</h4>
+        <p class="translator"><b>Перевод:</b> Михаил Лозинский; Борис Пастернак</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Ромео_и_Джульетта_(Шекспир)" target="_blank" rel="noopener" data-category="tragedy">
+        <span class="tag">Трагедия</span>
+        <h4>Ромео и Джульетта</h4>
+        <p class="translator"><b>Перевод:</b> Татьяна Щепкина-Куперник; Борис Пастернак</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Отелло_(Шекспир)" target="_blank" rel="noopener" data-category="tragedy">
+        <span class="tag">Трагедия</span>
+        <h4>Отелло</h4>
+        <p class="translator"><b>Перевод:</b> Борис Пастернак</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Король_Лир_(Шекспир)" target="_blank" rel="noopener" data-category="tragedy">
+        <span class="tag">Трагедия</span>
+        <h4>Король Лир</h4>
+        <p class="translator"><b>Перевод:</b> Борис Пастернак</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Макбет_(Шекспир)" target="_blank" rel="noopener" data-category="tragedy">
+        <span class="tag">Трагедия</span>
+        <h4>Макбет</h4>
+        <p class="translator"><b>Перевод:</b> Юрий Корнеев; Михаил Лозинский</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Антоний_и_Клеопатра_(Шекспир)" target="_blank" rel="noopener" data-category="tragedy">
+        <span class="tag">Трагедия</span>
+        <h4>Антоний и Клеопатра</h4>
+        <p class="translator"><b>Перевод:</b> Дмитрий Михаловский; Александр Островский (отрывок)</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Сон_в_летнюю_ночь_(Шекспир)" target="_blank" rel="noopener" data-category="comedy">
+        <span class="tag">Комедия</span>
+        <h4>Сон в летнюю ночь</h4>
+        <p class="translator"><b>Перевод:</b> Татьяна Щепкина-Куперник</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Венецианский_купец_(Шекспир)" target="_blank" rel="noopener" data-category="comedy">
+        <span class="tag">Комедия</span>
+        <h4>Венецианский купец</h4>
+        <p class="translator"><b>Перевод:</b> Татьяна Щепкина-Куперник; Пётр Вейнберг</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Двенадцатая_ночь_(Шекспир)" target="_blank" rel="noopener" data-category="comedy">
+        <span class="tag">Комедия</span>
+        <h4>Двенадцатая ночь, или Что угодно</h4>
+        <p class="translator"><b>Перевод:</b> Пётр Вейнберг; Дмитрий Михаловский</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Бесплодные_усилия_любви_(Шекспир)" target="_blank" rel="noopener" data-category="comedy">
+        <span class="tag">Комедия</span>
+        <h4>Бесплодные усилия любви</h4>
+        <p class="translator"><b>Перевод:</b> Пётр Вейнберг</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Мера_за_меру_(Шекспир)" target="_blank" rel="noopener" data-category="comedy">
+        <span class="tag">Комедия</span>
+        <h4>Мера за меру</h4>
+        <p class="translator"><b>Перевод:</b> Татьяна Щепкина-Куперник</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Ричард_III_(Шекспир)" target="_blank" rel="noopener" data-category="history">
+        <span class="tag">Хроника</span>
+        <h4>Ричард III</h4>
+        <p class="translator"><b>Перевод:</b> Александр Соколовский; Пётр Вейнберг</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Генрих_V_(Шекспир)" target="_blank" rel="noopener" data-category="history">
+        <span class="tag">Хроника</span>
+        <h4>Генрих V</h4>
+        <p class="translator"><b>Перевод:</b> Александр Соколовский; Пётр Вейнберг</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Генрих_VI_(Шекспир)" target="_blank" rel="noopener" data-category="history">
+        <span class="tag">Хроника</span>
+        <h4>Генрих VI</h4>
+        <p class="translator"><b>Перевод:</b> Александр Соколовский</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Король_Иоанн_(Шекспир)" target="_blank" rel="noopener" data-category="history">
+        <span class="tag">Хроника</span>
+        <h4>Король Иоанн</h4>
+        <p class="translator"><b>Перевод:</b> Александр Дружинин</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Сонеты_(Шекспир)" target="_blank" rel="noopener" data-category="poetry">
+        <span class="tag">Сонеты</span>
+        <h4>Сонеты</h4>
+        <p class="translator"><b>Перевод:</b> Самуил Маршак (канонический перевод)</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Венера_и_Адонис_(Шекспир)" target="_blank" rel="noopener" data-category="poetry">
+        <span class="tag">Поэма</span>
+        <h4>Венера и Адонис</h4>
+        <p class="translator"><b>Перевод:</b> Александр Курошева</p>
+      </a>
+
+      <a class="play-card" href="https://ru.wikisource.org/wiki/Буря_(Шекспир)" target="_blank" rel="noopener" data-category="poetry">
+        <span class="tag">Поэма</span>
+        <h4>Буря</h4>
+        <p class="translator"><b>Перевод:</b> Татьяна Щепкина-Куперник</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= НОВАЯ ВКЛАДКА: ТЕАТР ================= -->
+<section class="section" id="theatre">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Сцена · «Глобус» · Постановки</div>
+      <h2>Театр Шекспира</h2>
+      <p>Шекспир был не только драматургом, но и актёром, пайщиком и совладельцем театра. Его «Глобус» стал одним из главных театров Англии — и местом, где впервые увидели свет многие его пьесы.</p>
+    </div>
+
+    <div class="theatre-hero">
+      <h3>«Глобус»: театр, для которого писал Шекспир</h3>
+      <div class="sub">Лондон · 1599–1613 · реконструирован в 1997</div>
+      <p style="color:var(--ink-soft); font-size:17px; margin-bottom:0;">
+        Театр «Глобус» был построен в 1599 году на южном берегу Темзы, в Бэнксайде. Его возвели из разобранного здания первого публичного театра Лондона — «Театра» (The Theatre), который к тому времени пришёл в негодность. Шекспир был пайщиком труппы «Слуги лорда-камергера» (позже — «Слуги короля»), и «Глобус» стал главной площадкой для его пьес.
+      </p>
+
+      <div class="theatre-facts">
+        <div class="t-fact"><b>1599</b><span>год открытия «Глобуса»</span></div>
+        <div class="t-fact"><b>≈ 3 000</b><span>зрителей вмещал театр</span></div>
+        <div class="t-fact"><b>1 пенни</b><span>стоил вход для «стоячих» мест</span></div>
+      </div>
+    </div>
+
+    <div class="theatre-timeline">
+      <h3 style="font-size:24px; margin-bottom:18px;">Ключевые даты и постановки</h3>
+
+      <div class="timeline-item">
+        <div class="year">21 сентября 1599</div>
+        <div class="event">Первая известная постановка в «Глобусе» — трагедия <strong>«Юлий Цезарь»</strong>. Театр мог вместить до 3 000 зрителей: «стоячие» места в партере и сидячие на трёх ярусах галерей.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="year">1600–1613</div>
+        <div class="event">В «Глобусе» ставятся главные пьесы Шекспира: <strong>«Гамлет»</strong>, <strong>«Отелло»</strong>, <strong>«Король Лир»</strong>, <strong>«Макбет»</strong>, <strong>«Антоний и Клеопатра»</strong>, <strong>«Зимняя сказка»</strong> и другие. Спектакли шли только при дневном свете, без антрактов и занавеса.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="year">29 июня 1613</div>
+        <div class="event"><strong>Пожар в «Глобусе»</strong> во время премьеры «Генриха VIII»: пушечный выстрел поджёг соломенную крышу. Театр сгорел дотла, но был отстроен заново — уже с черепичной крышей.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="year">1642–1644</div>
+        <div class="event">Пуританское правительство закрывает все театры Лондона. «Глобус» приходит в запустение и сносится. На его месте строят доходные дома.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="year">1997</div>
+        <div class="event">Американский актёр и режиссёр <strong>Сэм Уонамейкер</strong> осуществляет мечту о реконструкции: новое здание «Глобуса» открывается примерно в 200 метрах от оригинального места. Сегодня здесь идут спектакли по Шекспиру и современные постановки.</div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:40px;">
+      <h2 style="font-size:clamp(24px,3.4vw,34px);">Мысли Шекспира о театре</h2>
+      <p>Самые известные высказывания — из пьес и сонетов. Это его «театральный манифест», разбросанный по репликам героев.</p>
+    </div>
+
+    <div class="theatre-quotes">
+      <div class="t-quote">
+        «Весь мир — театр.<br>В нём женщины, мужчины — все актёры».
+        <span>«Как вам это понравится» · Жак</span>
+      </div>
+      <div class="t-quote">
+        «Цель игры — держать, так сказать, зеркало перед природой».
+        <span>«Гамлет» · Гамлет — актёрам</span>
+      </div>
+      <div class="t-quote">
+        «Театр — это место, где можно увидеть, как время превращается в судьбу».
+        <span>По мотивам «Гамлета» и «Макбета»</span>
+      </div>
+      <div class="t-quote">
+        «Самое лучшее в этом роде — только тени; худшее не хуже, если воображение дополнит их».
+        <span>«Сон в летнюю ночь» · Тезей</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= НОВАЯ ВКЛАДКА: ТЕАТРЫ МИРА ================= -->
+<section class="section" id="world-theatres">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Сцена · Весь мир · Билеты</div>
+      <h2>Где смотреть Шекспира сегодня</h2>
+      <p>От исторического «Глобуса» до Королевской шекспировской компании и московских театров: выберите площадку и перейдите по ссылке, чтобы купить билеты.</p>
+    </div>
+
+    <div class="world-grid">
+
+      <article class="world-card">
+        <div class="city">Лондон · Великобритания</div>
+        <h4>Shakespeare’s Globe</h4>
+        <p class="desc">Реконструкция исторического «Глобуса» на берегу Темзы. В репертуаре — Шекспир, современные пьесы и постановки при свечах в Sam Wanamaker Playhouse.</p>
+        <div class="links">
+          <a href="https://www.shakespearesglobe.com" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+          <a href="https://www.todaytix.com/london/collections/shakespeares-globe" target="_blank" rel="noopener">Афиша и билеты на TodayTix →</a>
+        </div>
+      </article>
+
+      <article class="world-card">
+        <div class="city">Стратфорд-на-Эйвоне · Великобритания</div>
+        <h4>Royal Shakespeare Company (RSC)</h4>
+        <p class="desc">Главная шекспировская труппа мира. Спектакли идут в Royal Shakespeare Theatre и Other Place. В 2025 году — «Макбет» и «Генрих V».</p>
+        <div class="links">
+          <a href="https://www.rsc.org.uk" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+          <a href="https://secure.rsc.org.uk" target="_blank" rel="noopener">Календарь спектаклей →</a>
+        </div>
+      </article>
+
+      <article class="world-card">
+        <div class="city">Париж · Франция</div>
+        <h4>Comédie-Française</h4>
+        <p class="desc">Старейший театр Франции. В сезоне 2025 года — «Макбет» в постановке Сильвии Косты (24 января — 11 мая 2025).</p>
+        <div class="links">
+          <a href="https://www.comedie-francaise.fr" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+        </div>
+      </article>
+
+      <article class="world-card">
+        <div class="city">Вена · Австрия</div>
+        <h4>Burgtheater</h4>
+        <p class="desc">Один из главных театров немецкоязычного мира. В 2025 году — «Ричард III» (ноябрь) и «Гамлет».</p>
+        <div class="links">
+          <a href="https://www.burgtheater.at" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+        </div>
+      </article>
+
+      <article class="world-card">
+        <div class="city">Москва · Россия</div>
+        <h4>Театр Наций</h4>
+        <p class="desc">Проект «Шекспир@Shakespeare»: «Ромео и Джульетта», «Макбет» и другие постановки. Билеты — на сайте театра и у партнёров.</p>
+        <div class="links">
+          <a href="https://theatreofnations.ru" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+          <a href="https://msk.kassir.ru" target="_blank" rel="noopener">Билеты на Kassir.ru →</a>
+        </div>
+      </article>
+
+      <article class="world-card">
+        <div class="city">Москва · Россия</div>
+        <h4>МХТ им. А. П. Чехова</h4>
+        <p class="desc">«Сонеты Шекспира» (премьера 2025) и «Как вам это понравится?». Билеты — от 500 до 6 500 ₽.</p>
+        <div class="links">
+          <a href="https://www.mhatchehova.ru" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+          <a href="https://www.afisha.ru" target="_blank" rel="noopener">Афиша и билеты →</a>
+        </div>
+      </article>
+
+      <article class="world-card">
+        <div class="city">Москва · Россия</div>
+        <h4>Театр «Современник»</h4>
+        <p class="desc">«Сон в летнюю ночь» и «ШекспирГамлет» в репертуаре. Билеты — от 800 ₽.</p>
+        <div class="links">
+          <a href="https://sovremennik.ru" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+        </div>
+      </article>
+
+      <article class="world-card">
+        <div class="city">Милан · Италия</div>
+        <h4>Teatro alla Scala</h4>
+        <p class="desc">Оперная сцена, где идут музыкальные версии Шекспира. В сезоне 2025/26 — «Леди Макбет Мценского уезда» Шостаковича (декабрь 2025).</p>
+        <div class="links">
+          <a href="https://www.teatroallascala.org" target="_blank" rel="noopener">Официальный сайт и билеты →</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= ОТНОШЕНИЕ ================= -->
+<section class="section" id="attitude">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Слава и полемика</div>
+      <h2>Как к Шекспиру относились русские и зарубежные авторы</h2>
+      <p>Шекспир вызывал не только восторг. Его величие измеряется и силой отталкивания: даже критики, отвергавшие его, писали о нём с той степенью серьёзности, которую дарует только гений. Нажмите «Подробнее», чтобы прочитать расширенный комментарий и ссылку на статью.</p>
+    </div>
+
+    <div class="attitude-grid">
+
+      <div class="attitude-panel">
+        <h3>Русские авторы и критики</h3>
+        <div class="who">XIX — начало XX века</div>
+
+        <div class="quote-row">
+          <div class="author">А. С. Пушкин</div>
+          <div class="text">«Что за чудо эти английские писатели… Шекспир — наш отец, великий учитель». Пушкин высоко ценил шекспировскую свободу и правду характеров.</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Пушкин познакомился с Шекспиром во многом через французские переводы и уже в 1820-е годы осознал его как «отца» новой драматургии. В заметке «О народной драме и драме „Марфа Посадница“» (1830) он писал о «вольном и широком изображении характеров» у Шекспира, противопоставляя его классицистической «правильности».</p>
+            <p>Влияние Шекспира ощутимо в «Борисе Годунове»: Пушкин сознательно строил трагедию «по шекспировскому образцу» — с народными сценами и многоголосием. Он ценил в английском драматурге правду страстей и отсутствие назидательности.</p>
+            <a href="https://ru.wikipedia.org/wiki/Пушкин,_Александр_Сергеевич" target="_blank" rel="noopener">Подробнее о Пушкине →</a>
+          </div>
+        </div>
+
+        <div class="quote-row">
+          <div class="author">В. Г. Белинский</div>
+          <div class="text">Называл Шекспира «царём драматического искусства», писал о его «всеобъемлющем гении», который постигает и добро, и зло.</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Белинский посвятил Шекспиру ряд статей, прежде всего — «Гамлет, драма Шекспира. Мочалов в роли Гамлета» (1838). В ней он разбирал не только пьесу, но и игру великого актёра, и утверждал, что Шекспир «обнимает» всю жизнь — и её светлые, и её тёмные стороны.</p>
+            <p>Для Белинского Шекспир — образец «истинно романтического» искусства, где гений не боится изображать зло, потому что видит человека целиком. Эта мысль во многом задала тон русской критике XIX века.</p>
+            <a href="https://ru.wikipedia.org/wiki/Белинский,_Виссарион_Григорьевич" target="_blank" rel="noopener">Подробнее о Белинском →</a>
+          </div>
+        </div>
+
+        <div class="quote-row">
+          <div class="author">А. И. Герцен</div>
+          <div class="text">«Страшный Шекспир огромен, велик… Для Шекспира грудь человека — вселенная». Герцен видел в нём «человека двух миров», завершившего романтическую эпоху.</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Герцен писал о Шекспире в «Былом и думах», в дневниках и письмах. Он воспринимал его как художника, в котором «грудь человека — вселенная»: Шекспир, по Герцену, сумел вместить в свои пьесы и добро, и зло, и трагедию, и фарс.</p>
+            <p>Особенно важно для Герцена то, что Шекспир стоит на границе двух эпох — романтической и новой. В нём ещё живёт «титаническая» мощь Возрождения, но уже слышны трезвые, аналитические ноты, которые Герцен ценил в современной литературе.</p>
+            <a href="https://ru.wikipedia.org/wiki/Герцен,_Александр_Иванович" target="_blank" rel="noopener">Подробнее о Герцене →</a>
+          </div>
+        </div>
+
+        <div class="quote-row">
+          <div class="author">И. С. Тургенев</div>
+          <div class="text">В речи 1864 года сказал: «Для нас Шекспир не одно только огромное, яркое имя: он сделался нашим достоянием, он вошёл в нашу плоть и кровь».</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Речь Тургенева была произнесена на торжествах по случаю 300-летия Шекспира в 1864 году. В ней он подчёркивал, что Шекспир для русской культуры уже не «чужой», а «свой» — вошёл в язык, в театр, в литературу.</p>
+            <p>За четыре года до этого Тургенев написал знаменитую статью «Гамлет и Дон-Кихот» (1860), где сравнил два вечных типа: рефлексирующего, сомневающегося Гамлета и самоотверженного, верящего Дон-Кихота. Эта работа до сих пор остаётся одной из самых цитируемых русских интерпретаций шекспировского героя.</p>
+            <a href="https://ru.wikipedia.org/wiki/Тургенев,_Иван_Сергеевич" target="_blank" rel="noopener">Подробнее о Тургеневе →</a>
+          </div>
+        </div>
+
+        <div class="quote-row negative">
+          <div class="author">Л. Н. Толстой</div>
+          <div class="text">В статье «О Шекспире и о драме» (1903–1904) резко критиковал Шекспира за отсутствие «нравственного центра», неестественность и «нагромождение ужасов».</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Толстой перечитал всего Шекспира в оригинале и пришёл к выводу, что тот «не художник», а «ремесленник», который подражает внешним эффектам. В статье он разбирал «Короля Лира», «Отелло», «Гамлета» и находил в них натяжки, неправдоподобие и отсутствие «религиозного» центра.</p>
+            <p>Критика Толстого вызвала бурную полемику. Многие современники (например, Корней Чуковский, позже написавший книгу «Высокое искусство») спорили с ним. Но сама статья осталась важным документом: она показывает, что даже отвергая Шекспира, русская культура мерила себя его меркой.</p>
+            <a href="https://ru.wikisource.org/wiki/О_Шекспире_и_о_драме_(Толстой)" target="_blank" rel="noopener">Текст статьи Толстого →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="attitude-panel">
+        <h3>Зарубежные авторы и критики</h3>
+        <div class="who">XVII — XX века</div>
+
+        <div class="quote-row">
+          <div class="author">И. В. Гёте</div>
+          <div class="text">Преклонялся перед Шекспиром, называл его «неисчерпаемым» и ставил его искусство выше любых правил классицизма. Гёте адаптировал «Ромео и Джульетту» для Веймарского театра.</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Гёте открыл Шекспира в 1770-е годы и был потрясён его свободой. В романе «Годы учения Вильгельма Мейстера» он вложил в уста героя знаменитый разбор «Гамлета»: Шекспир, по Гёте, показывает «великое деяние», которое легло на душу, не способную его вынести.</p>
+            <p>В эссе «Шекспир и несть ему конца» (1813–1816) Гёте писал, что Шекспир — «неисчерпаем»: каждое поколение находит в нём своё. Гёте не копировал Шекспира, но учился у него широте взгляда на мир.</p>
+            <a href="https://ru.wikipedia.org/wiki/Гёте,_Иоганн_Вольфганг" target="_blank" rel="noopener">Подробнее о Гёте →</a>
+          </div>
+        </div>
+
+        <div class="quote-row">
+          <div class="author">Ф. Шиллер</div>
+          <div class="text">Восхищался шекспировской свободой изображения истории и страстей; его собственные драмы несут отчётливый след шекспировской традиции.</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Шиллер вырос на Шекспире: его ранняя драма «Разбойники» (1781) поразила современников именно шекспировской энергией и отказом от классицистических единств. В предисловии к «Мессинской невесте» (1803) Шиллер размышлял о том, как соединить шекспировскую свободу с античной формой.</p>
+            <p>Для Шиллера Шекспир был примером того, как драматург может «выйти за пределы» сцены и показать историю как живую стихию.</p>
+            <a href="https://ru.wikipedia.org/wiki/Шиллер,_Фридрих" target="_blank" rel="noopener">Подробнее о Шиллере →</a>
+          </div>
+        </div>
+
+        <div class="quote-row">
+          <div class="author">Виктор Гюго</div>
+          <div class="text">Посвятил Шекспиру целую книгу («William Shakespeare», 1864), где называл его «сиянием гения, чьи лучи проникают повсюду».</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Книга Гюго «Уильям Шекспир» (1864) — это не столько биография, сколько гимн гению. Гюго писал, что Шекспир — «одна из тех вершин, где человек встречается с бесконечностью». Для Гюго Шекспир — воплощение романтической свободы: он смешивает трагическое и комическое, высокое и низкое, как сама жизнь.</p>
+            <p>Эта книга во многом определила образ Шекспира как «романтика» для всего XIX века — в том числе и для русских читателей.</p>
+            <a href="https://ru.wikipedia.org/wiki/Гюго,_Виктор" target="_blank" rel="noopener">Подробнее о Гюго →</a>
+          </div>
+        </div>
+
+        <div class="quote-row negative">
+          <div class="author">Вольтер</div>
+          <div class="text">Ценил отдельные сцены, но в целом считал Шекспира «варварским» гением, нарушающим правила вкуса и приличий.</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>В «Философских письмах» (1734) Вольтер познакомил французов с Шекспиром — и одновременно предупредил: это «гений без правил». Он восхищался монологом Гамлета, но ужасался грубости могильщиков и «непристойностям» в «Гамлете» и «Отелло».</p>
+            <p>Вольтер считал, что французская трагедия (Корнель, Расин) выше по форме, хотя признавал, что у Шекспира есть «искры гения». Этот спор о «варварстве» и «вкусе» растянулся на весь XVIII век.</p>
+            <a href="https://ru.wikipedia.org/wiki/Вольтер" target="_blank" rel="noopener">Подробнее о Вольтере →</a>
+          </div>
+        </div>
+
+        <div class="quote-row negative">
+          <div class="author">Бернард Шоу</div>
+          <div class="text">Иронизировал над «шекспировским культом», но признавал его огромную драматургическую силу. Шоу создал собственную версию «Цимбелина».</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Шоу называл себя «антишекспиристом» и в предисловиях к своим пьесам постоянно спорил с «бардом». Он считал, что Шекспир часто жертвует мыслью ради красивой фразы, и что современный театр должен идти дальше.</p>
+            <p>При этом Шоу не раз переписывал Шекспира: в 1937 году он создал «Cymbeline Refinished» — новый финал «Цимбелина», а в пьесе «Тёмная леди сонетов» (1910) вывел самого Шекспира персонажем. Это критика изнутри — из восхищения и раздражения одновременно.</p>
+            <a href="https://ru.wikipedia.org/wiki/Шоу,_Джордж_Бернард" target="_blank" rel="noopener">Подробнее о Шоу →</a>
+          </div>
+        </div>
+
+        <div class="quote-row">
+          <div class="author">Гарольд Блум</div>
+          <div class="text">Современный критик, автор книги «Шекспир: изобретение человеческого», называл его «смертным Богом» литературы.</div>
+          <button class="quote-more" aria-expanded="false">Подробнее →</button>
+          <div class="quote-detail" hidden>
+            <p>Гарольд Блум (1930–2019) — один из самых влиятельных литературных критиков XX века. В книге «Шекспир: изобретение человеческого» (1998) он утверждал, что Шекспир «изобрёл» современного человека: его персонажи мыслят, сомневаются и меняются так, как до него в литературе не умели.</p>
+            <p>Блум называл Шекспира «смертным Богом» и ставил его выше всех писателей — не только по масштабу, но и по способности создавать внутреннюю жизнь героя. Эта книга до сих пор вызывает споры, но остаётся ключевой для «шекспироведения».</p>
+            <a href="https://ru.wikipedia.org/wiki/Блум,_Гарольд" target="_blank" rel="noopener">Подробнее о Блуме →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= ГАЛЕРЕЯ ================= -->
+<section class="section" id="gallery">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Образы · Гравюры · Памятники</div>
+      <h2>Галерея Шекспира</h2>
+      <p>Портреты, гравюры и титульные листы его пьес: то немногое, что позволяет увидеть лицо и облик эпохи.</p>
+    </div>
+
+    <div class="gallery-grid">
+
+      <!-- ТВОЯ 2-Я КАРТИНКА (droeshout.jpg) -->
+      <figure class="gallery-item">
+        <img
+          src="droeshout.jpg"
+          alt="Гравюра Мартина Дройсхута из Первого фолио 1623 года"
+          loading="lazy">
+        <figcaption>Гравюра Мартина Дройсхута. Первое фолио, 1623.</figcaption>
+      </figure>
+
+      <!-- ТВОЯ 5-Я КАРТИНКА (monument.jpg) -->
+      <figure class="gallery-item">
+        <img
+          src="monument.jpg"
+          alt="Памятник Шекспиру в церкви Святой Троицы, Стратфорд-на-Эйвоне"
+          loading="lazy">
+        <figcaption>Памятник в церкви Св. Троицы. Стратфорд-на-Эйвоне.</figcaption>
+      </figure>
+
+      <!-- ТВОЯ 3-Я КАРТИНКА (folio.jpg) -->
+      <figure class="gallery-item">
+        <img
+          src="folio.jpg"
+          alt="Титульный лист Первого фолио Шекспира"
+          loading="lazy">
+        <figcaption>Титульный лист Первого фолио, 1623.</figcaption>
+      </figure>
+
+      <!-- ТВОЯ 4-Я КАРТИНКА (globe.jpg) -->
+      <figure class="gallery-item">
+        <img
+          src="globe.jpg"
+          alt="Изображение театра «Глобус»"
+          loading="lazy">
+        <figcaption>Театр «Глобус» в Лондоне. Реконструкция.</figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© Литературный портал · Уильям Шекспир</div>
+  <div>Материалы: биография, переводы, критика · Иллюстрации: общественное достояние</div>
+</footer>
+
+<script>
+  /* ---------- ФИЛЬТР ПЬЕС ---------- */
+  const filterButtons = document.querySelectorAll(".filter-btn");
+  const playCards = document.querySelectorAll(".play-card");
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const filter = btn.dataset.filter;
+      playCards.forEach(card => {
+        const match = filter === "all" || card.dataset.category === filter;
+        card.style.display = match ? "flex" : "none";
+      });
+    });
+  });
+
+  /* ---------- РАСКРЫВАЮЩИЕСЯ БЛОКИ «ПОДРОБНЕЕ» ---------- */
+  document.querySelectorAll(".quote-more").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const detail = btn.nextElementSibling;
+      const isOpen = !detail.hidden;
+      detail.hidden = isOpen;
+      btn.textContent = isOpen ? "Подробнее →" : "Свернуть ↑";
+      btn.setAttribute("aria-expanded", String(!isOpen));
+    });
+  });
+
+  /* ---------- ПЛАВНАЯ ПРОКРУТКА ДЛЯ ЯКОРЕЙ ---------- */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+      const targetId = this.getAttribute("href");
+      if (targetId === "#") return;
+      const target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  });
+</script>
+</body>
+</html>
+```
